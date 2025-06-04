@@ -14,7 +14,7 @@ This demo provides functionality similar to the [OpenAI Realtime Embedded SDK](h
 4. **Improved Peer Connection**: Utilizes an enhanced version of `esp_peer` for better performance and reliability.
 
 ## Hardware Requirements
-The default setup uses the [ESP32-S3-Korvo-2](https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/user-guide-esp32-s3-korvo-2.html).
+The default setup uses the **MUSE_RADIO** board.
 
 ## How to build
 
