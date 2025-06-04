@@ -19,7 +19,7 @@ extern "C" {
 #if CONFIG_IDF_TARGET_ESP32P4
 #define TEST_BOARD_NAME "ESP32_P4_DEV_V14"
 #else
-#define TEST_BOARD_NAME "S3_Korvo_V2"
+#define TEST_BOARD_NAME "MUSE_RADIO"
 #endif
 
 /**

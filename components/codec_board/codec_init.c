@@ -78,7 +78,7 @@ static int _i2c_init(uint8_t port)
         ESP_LOGE(TAG, "failed to initialize I2C master bus port %d", port);
         return -1;
     }
-    ESP_LOGI(TAG, "Set mater handle %d %p", port, i2c_bus_handle[port]);
+    ESP_LOGI(TAG, "Set master handle %d %p", port, i2c_bus_handle[port]);
 #else
     i2c_config_t i2c_cfg = {
         .mode = I2C_MODE_MASTER,
@@ -102,7 +102,7 @@ static int _i2c_init(uint8_t port)
 
 void *get_i2c_bus_handle(uint8_t port)
 {
-    ESP_LOGI(TAG, "Get mater handle %d %p", port, i2c_bus_handle[port]);
+    ESP_LOGI(TAG, "Get master handle %d %p", port, i2c_bus_handle[port]);
     return i2c_bus_handle[port];
 }
 
@@ -436,6 +436,19 @@ int init_codec(codec_init_cfg_t *cfg)
                     es7210_cfg.mic_selected |= ES7120_SEL_MIC2 | ES7120_SEL_MIC4;
                 }
                 codec_res.in_codec_if = es7210_codec_new(&es7210_cfg);
+            } break;
+
+            case CODEC_TYPE_ES8388: {
+                i2c_cfg.addr = in_cfg.i2c_addr ? in_cfg.i2c_addr : ES8388_CODEC_DEFAULT_ADDR;
+                codec_res.in_ctrl_if = audio_codec_new_i2c_ctrl(&i2c_cfg);
+                es8388_codec_cfg_t es8388_cfg = {
+                    .codec_mode = same_codec ? ESP_CODEC_DEV_WORK_MODE_BOTH : ESP_CODEC_DEV_WORK_MODE_ADC,
+                    .ctrl_if = codec_res.in_ctrl_if,
+                    .gpio_if = codec_res.gpio_if,
+                    .pa_pin = in_cfg.pa_pin,
+                    .hw_gain.pa_gain = in_cfg.pa_gain,
+                };
+                codec_res.in_codec_if = es8388_codec_new(&es8388_cfg);
             } break;
 
             case CODEC_TYPE_ES7243: {
